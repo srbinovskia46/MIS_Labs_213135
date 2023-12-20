@@ -90,7 +90,7 @@ class _NewExamDateState extends State<NewExamDate> {
                   date: selectedDate,
                 );
                 widget.addDate(newExam); // Call the addDate function provided by the parent widget
-                Navigator.pop(context); // Close the bottom sheet after adding the exam
+                Navigator.of(context).pop(); // Close the bottom sheet after adding the exam
               },
               child: const Text('Add Exam'),
             ),

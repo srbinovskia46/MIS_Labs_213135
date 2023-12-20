@@ -1,8 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-import 'calendar_exams.dart';
-import 'constants.dart';
+import '../calendar_exams.dart';
+import '../constants.dart';
 
 class LoginScreen extends StatefulWidget {
   static String id = "login_screen";
@@ -68,7 +68,7 @@ class LoginScreenState extends State<LoginScreen> {
                       setState(() {
                         showSpinner = false;
                       });
-                      Navigator.push(
+                      Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
                               builder: (context) => const CalendarExams()));

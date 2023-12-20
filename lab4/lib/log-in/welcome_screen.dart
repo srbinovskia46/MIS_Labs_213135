@@ -1,6 +1,6 @@
 
 import 'package:flutter/material.dart';
-import 'package:lab3/registration_screen.dart';
+import 'package:lab3/log-in/registration_screen.dart';
 
 import 'login_screen.dart';
 

@@ -1,8 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-import 'calendar_exams.dart';
-import 'constants.dart';
+import '../calendar_exams.dart';
+import '../constants.dart';
 
 class RegistrationScreen extends StatefulWidget {
   static String id = "Registration_screen";

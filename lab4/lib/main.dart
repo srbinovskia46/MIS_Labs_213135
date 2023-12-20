@@ -2,7 +2,8 @@ import 'dart:io';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:lab3/welcome_screen.dart';
+import 'package:lab3/calendar_exams.dart';
+import 'package:lab3/log-in/welcome_screen.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
