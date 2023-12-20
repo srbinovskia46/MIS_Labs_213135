@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
-import 'package:lab3/widgets/newExamDate.dart'; // Import your NewExamDate widget here
+import 'package:lab3/widgets/newExamDate.dart';
 import 'model/Exam.dart';
+import 'utils/exam_storage.dart';
 
 class CalendarExams extends StatefulWidget {
   static String id = "calendar_exams";
@@ -13,7 +14,21 @@ class CalendarExams extends StatefulWidget {
 }
 
 class _CalendarExamsState extends State<CalendarExams> {
-  List<Exam> exams = [Exam(subject: "MIS", date: DateTime.now())];
+  List<Exam> exams = [];
+  final ExamStorage examStorage = ExamStorage();
+
+  @override
+  void initState() {
+    super.initState();
+    loadExamData();
+  }
+
+  void loadExamData() async {
+    List<Exam> storedExams = await examStorage.getExamDates();
+    setState(() {
+      exams = storedExams;
+    });
+  }
 
   void _addExamDateFunction() {
     showModalBottomSheet(
@@ -26,6 +41,7 @@ class _CalendarExamsState extends State<CalendarExams> {
             addDate: (newExam) {
               setState(() {
                 exams.add(newExam);
+                examStorage.saveExamDates(exams);
               });
             },
           ),
@@ -62,12 +78,13 @@ class _CalendarExamsState extends State<CalendarExams> {
                         '${exam.date.hour}:${exam.date.minute}'), // Customize display as needed
                     // Add more details if required
                     trailing: IconButton(
-                      icon: Icon(Icons.delete),
+                      icon: const Icon(Icons.delete),
                       onPressed: () {
                         setState(() {
                           exams.remove(exam);
+                          examStorage.saveExamDates(exams); // Delete the exam
                         });
-                        Navigator.of(context).pop(); // Close the alert dialog after deletion
+                        Navigator.of(context).pop(); // Close the dialog after deletion
                       },
                     ),
                   );
@@ -79,7 +96,7 @@ class _CalendarExamsState extends State<CalendarExams> {
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
-                child: Text('Close'),
+                child: const Text('Close'),
               ),
             ],
           );
@@ -110,9 +127,9 @@ class _CalendarExamsState extends State<CalendarExams> {
       ),
       body: SafeArea(
         child: SfCalendar(
-          view: CalendarView.month, // Set the initial view
-          dataSource: ExamDataSource(exams), // Use your exams as the data source
-          onTap: _showDetails, // Call _showDetails method on calendar tap
+          view: CalendarView.month,
+          dataSource: ExamDataSource(exams),
+          onTap: _showDetails,
         ),
       ),
     );
@@ -126,9 +143,8 @@ class ExamDataSource extends CalendarDataSource {
         startTime: exam.date,
         endTime: exam.date.add(const Duration(hours: 1)),
         subject: exam.subject,
-        color: Colors.blue, // Customize event colors as needed
+        color: Colors.blue,
       );
     }).toList();
   }
 }
-
