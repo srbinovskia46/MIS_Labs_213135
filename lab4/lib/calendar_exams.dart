@@ -1,87 +1,3 @@
-// import 'package:flutter/material.dart';
-// import 'package:syncfusion_flutter_calendar/calendar.dart';
-// import 'package:lab3/widgets/newExamDate.dart';
-// import 'model/Exam.dart';
-//
-// class CalendarExams extends StatefulWidget {
-//   static String id = "calendar_exams";
-//
-//   const CalendarExams({Key? key}) : super(key: key);
-//
-//   @override
-//   _CalendarExamsState createState() => _CalendarExamsState();
-// }
-//
-// class _CalendarExamsState extends State<CalendarExams> {
-//   List<Exam> exams = [Exam(subject: "MIS", date: DateTime.now())];
-//
-//   void _addExamDateFunction() {
-//     showModalBottomSheet(
-//       context: context,
-//       builder: (_) {
-//         return GestureDetector(
-//           onTap: () {},
-//           behavior: HitTestBehavior.opaque,
-//           child: NewExamDate(
-//             addDate: (newExam) {
-//               setState(() {
-//                 exams.add(newExam);
-//               });
-//               //id doesn't work properly with Navigator.pop(context)
-//               //Navigator.pop(context); // Close the modal after adding the exam
-//             },
-//           ),
-//         );
-//       },
-//     );
-//   }
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: const Text(
-//           'Exam Dates',
-//           style: TextStyle(color: Colors.white),
-//         ),
-//         backgroundColor: Colors.deepPurpleAccent,
-//         iconTheme: const IconThemeData(color: Colors.white),
-//         actions: [
-//           IconButton(
-//             onPressed: () {
-//               _addExamDateFunction();
-//             },
-//             icon: const Icon(Icons.add_circle_outline_sharp, color: Colors.white),
-//           ),
-//         ],
-//       ),
-//       body: SafeArea(
-//         child: SfCalendar(
-//           view: CalendarView.month, // Set the initial view
-//           dataSource: ExamDataSource(exams), // Use your exams as the data source
-//           onTap: (CalendarTapDetails details) {
-//             // Handle tap events on the calendar if needed
-//             // For example, show details for a specific date
-//           },
-//         ),
-//       ),
-//     );
-//   }
-// }
-//
-// class ExamDataSource extends CalendarDataSource {
-//   ExamDataSource(List<Exam> source) {
-//     appointments = source.map((exam) {
-//       return Appointment(
-//         startTime: exam.date,
-//         endTime: exam.date.add(const Duration(hours: 1)),
-//         subject: exam.subject,
-//         color: Colors.blue, // Customize event colors as needed
-//       );
-//     }).toList();
-//   }
-// }
-
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'package:lab3/widgets/newExamDate.dart'; // Import your NewExamDate widget here
@@ -134,7 +50,8 @@ class _CalendarExamsState extends State<CalendarExams> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text('Events for ${tappedDate.day}/${tappedDate.month}/${tappedDate.year}'),
+            title: Text(
+                'Events for ${tappedDate.day}/${tappedDate.month}/${tappedDate.year}'),
             content: SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -144,6 +61,15 @@ class _CalendarExamsState extends State<CalendarExams> {
                     subtitle: Text(
                         '${exam.date.hour}:${exam.date.minute}'), // Customize display as needed
                     // Add more details if required
+                    trailing: IconButton(
+                      icon: Icon(Icons.delete),
+                      onPressed: () {
+                        setState(() {
+                          exams.remove(exam);
+                        });
+                        Navigator.of(context).pop(); // Close the alert dialog after deletion
+                      },
+                    ),
                   );
                 }).toList(),
               ),
@@ -161,6 +87,7 @@ class _CalendarExamsState extends State<CalendarExams> {
       );
     }
   }
+
 
   @override
   Widget build(BuildContext context) {
