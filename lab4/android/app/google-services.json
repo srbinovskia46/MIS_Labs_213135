@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "595819926407",
+    "project_id": "mishw-1dd22",
+    "storage_bucket": "mishw-1dd22.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:595819926407:android:a01f71e62e29ceaf09f922",
+        "android_client_info": {
+          "package_name": "com.example.lab3"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDLXQ-WMUqDWu_3aN_KfQw_vh3bvs8ojZs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
