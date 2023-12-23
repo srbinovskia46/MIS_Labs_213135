@@ -1,11 +1,28 @@
 import 'dart:io';
 
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:lab3/calendar_exams.dart';
 import 'package:lab3/log-in/welcome_screen.dart';
 
 Future main() async {
+  await AwesomeNotifications().initialize(
+      null,
+      [
+        NotificationChannel(channelKey: "basic_channel",
+            channelName: "Basic notifications",
+            channelDescription: "Basic notifications channel",
+        channelGroupKey: "basic_channel_group",
+        importance: NotificationImportance.Max,)
+      ],
+  channelGroups: [
+      NotificationChannelGroup(channelGroupKey: "basic_channel_group", channelGroupName: "Basic group")
+      ]);
+  bool isAllowedToSendNotifications = await AwesomeNotifications().isNotificationAllowed();
+  if (isAllowedToSendNotifications){
+    AwesomeNotifications().requestPermissionToSendNotifications();
+  }
   WidgetsFlutterBinding.ensureInitialized();
 
   Platform.isAndroid

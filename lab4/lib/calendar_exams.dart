@@ -1,4 +1,6 @@
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
+import 'package:lab3/notification_controller.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'package:lab3/widgets/newExamDate.dart';
 import 'model/Exam.dart';
@@ -19,6 +21,13 @@ class _CalendarExamsState extends State<CalendarExams> {
 
   @override
   void initState() {
+    AwesomeNotifications().setListeners(
+        onActionReceivedMethod:         NotificationController.onActionReceivedMethod,
+        onNotificationCreatedMethod:    NotificationController.onNotificationCreatedMethod,
+        onNotificationDisplayedMethod:  NotificationController.onNotificationDisplayedMethod,
+        onDismissActionReceivedMethod:  NotificationController.onDismissActionReceivedMethod
+    );
+
     super.initState();
     loadExamData();
   }
@@ -29,6 +38,32 @@ class _CalendarExamsState extends State<CalendarExams> {
       exams = storedExams;
     });
   }
+
+  // void _addExamDateFunction() {
+  //   showModalBottomSheet(
+  //     context: context,
+  //     builder: (_) {
+  //       return GestureDetector(
+  //         onTap: () {},
+  //         behavior: HitTestBehavior.opaque,
+  //         child: NewExamDate(
+  //           addDate: (newExam) {
+  //             setState(() {
+  //               exams.add(newExam);
+  //               examStorage.saveExamDates(exams);
+  //               AwesomeNotifications().createNotification(
+  //                   content: NotificationContent(
+  //                       id: 1,
+  //                       channelKey: "basic_channel",
+  //                       title: newExam.subject,
+  //                       body: newExam.date.toString()));
+  //             });
+  //           },
+  //         ),
+  //       );
+  //     },
+  //   );
+  // }
 
   void _addExamDateFunction() {
     showModalBottomSheet(
@@ -42,6 +77,22 @@ class _CalendarExamsState extends State<CalendarExams> {
               setState(() {
                 exams.add(newExam);
                 examStorage.saveExamDates(exams);
+
+                // Calculate the notification time 5 seconds in the future
+                DateTime examDate = newExam.date;
+                DateTime notificationTime = examDate.add(const Duration(seconds: 5));
+                //print(notificationTime);
+
+                AwesomeNotifications().createNotification(
+                  content: NotificationContent(
+                    id: 1,
+                    channelKey: "basic_channel",
+                    title: newExam.subject,
+                    body: newExam.date.toString(),
+                    wakeUpScreen: true,
+                    category: NotificationCategory.Reminder,
+                  ),
+                  schedule: NotificationCalendar.fromDate(date: notificationTime),);
               });
             },
           ),
@@ -49,6 +100,9 @@ class _CalendarExamsState extends State<CalendarExams> {
       },
     );
   }
+
+
+
 
   void _showDetails(CalendarTapDetails details) {
     if (details.targetElement == CalendarElement.calendarCell) {
